@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+    ports:
+      - '6379:6379'
+    volumes: 
+      - cache:/data
+  mysql:
+    image: mysql
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: redislock  
+volumes:
+  cache:
+    driver: local
+  db_data:
