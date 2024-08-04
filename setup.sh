@@ -18,3 +18,5 @@ echo \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   tee /etc/apt/sources.list.d/docker.list > /dev/null
 apt-get update
+
+echo "{"psFormat": "table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\t{{.Ports}}"}" > ~/.docker/config.json
