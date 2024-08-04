@@ -1,5 +1,8 @@
 # Install git
-apt install git 
+sudo apt install git
+
+# Install htop for CPU and RAM monitor
+sudo apt install htop
 
 # Install docker
 # Add Docker's official GPG key:
