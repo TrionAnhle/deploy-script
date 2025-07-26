@@ -24,6 +24,15 @@ if [ -f /etc/os-release ]; then
 
   # Update docker format
   echo "{"psFormat": "table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\t{{.Ports}}"}" >~/.docker/config.json
+
+  # Create network default
+  if ! docker network ls | grep -q 'vps-net'; then
+    docker network create vps-net
+    echo "Docker network 'vps-net' created."
+  else
+    echo "Docker network 'vps-net' already exists."
+  fi
+
 else
   echo "Cannot detect OS."
 fi

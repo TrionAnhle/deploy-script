@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: bitnami/rabbitmq:latest
+    hostname: rabbitmq
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_USERNAME: user
+      RABBITMQ_PASSWORD: password
+      RABBITMQ_ERLANG_COOKIE: secretcookie
+    volumes:
+      - rabbitmq_data:/bitnami/rabbitmq
+    networks:
+      - vps-net
+
+volumes:
+  rabbitmq_data:
+
+networks:
+  vps-net:
+    external: true
