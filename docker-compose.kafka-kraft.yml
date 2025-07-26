@@ -21,7 +21,7 @@ services:
       KAFKA_NUM_PARTITIONS: 1
       KAFKA_LOG_RETENTION_HOURS: 48
     networks:
-      - kafka-net
+      - vps-net
     healthcheck:
       test:
         [
@@ -54,7 +54,7 @@ services:
   #     KAFKA_NUM_PARTITIONS: 1
   #     KAFKA_LOG_RETENTION_HOURS: 24
   #   networks:
-  #     - kafka-net
+  #     - vps-net
   #   healthcheck:
   #     test:
   #       [
@@ -87,7 +87,7 @@ services:
   #     KAFKA_NUM_PARTITIONS: 1
   #     KAFKA_LOG_RETENTION_HOURS: 24
   #   networks:
-  #     - kafka-net
+  #     - vps-net
   #   healthcheck:
   #     test:
   #       [
@@ -115,7 +115,7 @@ services:
       # - kafka-2
       # - kafka-3
     networks:
-      - kafka-net
+      - vps-net
 
 volumes:
   kafka-data-1:
@@ -123,5 +123,5 @@ volumes:
   kafka-data-3:
 
 networks:
-  kafka-net:
-    driver: bridge
+  vps-net:
+    external: true
