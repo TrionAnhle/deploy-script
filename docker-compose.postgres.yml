@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  postgresql:
+    image: bitnami/postgresql:latest
+    hostname: postgresql
+    container_name: postgresql
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/bitnami/postgresql
+    environment:
+      POSTGRESQL_USERNAME: root
+      POSTGRESQL_PASSWORD: 123456
+      POSTGRESQL_DATABASE: redislock
+    networks:
+      - vps-net
+volumes:
+  pg_data:
+networks:
+  vps-net:
+    external: true
