@@ -2,6 +2,7 @@ version: '3.8'
 services:
   mongo:
       image: mongo:latest
+      hostname: mongo
       container_name: mongo
       ports:
         - '27017:27017'
@@ -14,6 +15,11 @@ services:
         - MONGO_INITDB_ROOT_PASSWORD=123456
       volumes:
         - mongo_data:/data/db
+      networks:
+        - vps-net
 volumes:
   mongo_data:
+networks:
+  vps-net:
+    external: true
         

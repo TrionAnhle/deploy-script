@@ -9,6 +9,11 @@ services:
       - cache:/data
     environment:
       ALLOW_EMPTY_PASSWORD: yes
+    networks:
+      - vps-net
 volumes:
   cache:
     driver: local
+networks:
+  vps-net:
+    external: true

@@ -8,6 +8,8 @@ services:
       - "2181:2181"
     environment:
       ALLOW_ANONYMOUS_LOGIN: yes
+    networks:
+      - vps-net
   kafka:
     image: bitnami/kafka:latest
     container_name: kafka
@@ -25,6 +27,8 @@ services:
       KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092,INTERNAL://kafka:9094
     depends_on:
       - zookeeper
+    networks:
+      - vps-net
   kafka-ui:
     image: provectuslabs/kafka-ui
     container_name: kafka-ui
@@ -35,3 +39,9 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9094
     depends_on:
       - kafka
+    networks:
+      - vps-net
+
+networks:
+  vps-net:
+    external: true
