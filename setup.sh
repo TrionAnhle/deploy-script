@@ -22,12 +22,12 @@ if [ -f /etc/os-release ]; then
     tee /etc/apt/sources.list.d/docker.list >/dev/null
   apt-get update
 
+  # Update docker format
+  echo "{"psFormat": "table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\t{{.Ports}}"}" >~/.docker/config.json
 else
   echo "Cannot detect OS."
 fi
 
-# Update docker format
-echo "{"psFormat": "table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\t{{.Ports}}"}" >~/.docker/config.json
 
 # Update vim format
 cp config/.vimrc ~/.vimrc
