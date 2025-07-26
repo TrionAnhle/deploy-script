@@ -102,12 +102,14 @@ services:
 
   kafka-ui:
     image: provectuslabs/kafka-ui
+    hostname: kafka-ui
+    container_name: kafka-ui
     ports:
       - "9091:8080"
     restart: always
     environment:
       KAFKA_CLUSTERS_0_NAME: "kraft-cluster"
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-1:9094,kafka-2:9094,kafka-3:9094
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-1:9094 #,kafka-2:9094,kafka-3:9094
     depends_on:
       - kafka-1
       # - kafka-2
