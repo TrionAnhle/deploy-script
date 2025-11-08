@@ -1,27 +1,32 @@
 version: '3.8'
 services:
   mongo:
-      image: mongo:latest
-      hostname: mongo
-      container_name: mongo
-      ports:
-        - '27017:27017'
-      logging:
-        options:
-            max-size: 1g
-      environment:
-        - MONGO_INITDB_DATABASE=my_db
-        - MONGO_INITDB_ROOT_USERNAME=admin
-        - MONGO_INITDB_ROOT_PASSWORD=123456
-      volumes:
-        - mongo_data:/data/db
-        - ./mongo-keyfile:/etc/mongo/mongo-keyfile
-      networks:
-        - vps-net
-      command: ["--replSet", "rs0", "--keyFile", "/etc/mongo/mongo-keyfile", "--bind_ip_all"]
+    image: mongo:latest
+    container_name: mongo
+    hostname: mongo
+    user: "999:999"
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=my_db
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-keyfile:/etc/mongo/mongo-keyfile:ro
+    networks:
+      - vps-net
+    command: ["--replSet","rs0",
+              "--keyFile","/etc/mongo/mongo-keyfile",
+              "--bind_ip_all",
+              "--auth"]
 volumes:
   mongo_data:
 networks:
   vps-net:
     external: true
-        
+# openssl rand -base64 756 > ./mongo-keyfile      # generate key file
+# sudo chown 999:999 ./mongo-keyfile              # default user in mongo image
+# sudo chmod 400 ./mongo-keyfile                  # only owner user read
+# docker exec -it mongo mongosh -u admin -p 123456 --authenticationDatabase admin --eval 'rs.initiate({_id:"rs0", members:[{_id:0, host:"mongo:27017"}]})'
+# docker exec -it mongo mongosh -u admin -p 123456 --authenticationDatabase admin --eval 'rs.status().members.map(m => ({name:m.name, stateStr:m.stateStr}))'
