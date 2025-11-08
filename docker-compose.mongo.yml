@@ -15,8 +15,10 @@ services:
         - MONGO_INITDB_ROOT_PASSWORD=123456
       volumes:
         - mongo_data:/data/db
+        - ./mongo-keyfile:/etc/mongo/mongo-keyfile
       networks:
         - vps-net
+      command: ["--replSet", "rs0", "--keyFile", "/etc/mongo/mongo-keyfile", "--bind_ip_all"]
 volumes:
   mongo_data:
 networks:
