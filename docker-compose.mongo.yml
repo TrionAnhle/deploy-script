@@ -28,5 +28,8 @@ networks:
 # openssl rand -base64 756 > ./mongo-keyfile      # generate key file
 # sudo chown 999:999 ./mongo-keyfile              # default user in mongo image
 # sudo chmod 400 ./mongo-keyfile                  # only owner user read
+
+# Above command run before run docker compose
+
 # docker exec -it mongo mongosh -u admin -p 123456 --authenticationDatabase admin --eval 'rs.initiate({_id:"rs0", members:[{_id:0, host:"mongo:27017"}]})'
 # docker exec -it mongo mongosh -u admin -p 123456 --authenticationDatabase admin --eval 'rs.status().members.map(m => ({name:m.name, stateStr:m.stateStr}))'
