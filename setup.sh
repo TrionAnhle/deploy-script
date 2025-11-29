@@ -35,6 +35,8 @@ detect_os_family() {
 }
 
 setup_debian() {
+  . /etc/os-release
+
   apt-get update
   apt-get install -y git htop ca-certificates curl gnupg
   install -m 0755 -d /etc/apt/keyrings
