@@ -38,7 +38,8 @@ setup_debian() {
   . /etc/os-release
 
   apt-get update
-  apt-get install -y git htop ca-certificates curl gnupg
+  apt-get install -y git htop ca-certificates curl gnupg lsb-release
+
   install -m 0755 -d /etc/apt/keyrings
   curl -fsSL "https://download.docker.com/linux/$ID/gpg" -o /etc/apt/keyrings/docker.asc
   chmod a+r /etc/apt/keyrings/docker.asc
@@ -47,9 +48,15 @@ setup_debian() {
 
   echo \
     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/$ID \
-$codename stable" |
-    tee /etc/apt/sources.list.d/docker.list >/dev/null
+    $codename stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null
+
   apt-get update
+
+  # 👇 CÀI ĐỦ GÓI DOCKER
+  apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+  systemctl enable docker
+  systemctl start docker
 }
 
 setup_centos() {
