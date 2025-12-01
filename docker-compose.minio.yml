@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  minio:
+    image: bitnami/minio:latest
+    container_name: minio
+    restart: unless-stopped
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=SuperSecret123!
+      - MINIO_DEFAULT_BUCKETS=mybucket
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"   # MinIO API
+      - "9001:9001"   # MinIO Console
+    networks:
+      - vps-net
+
+volumes:
+  minio_data:
+    driver: local
+
+networks:
+  vps-net:
+    external: true
