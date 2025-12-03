@@ -26,7 +26,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "./opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 > /dev/null 2>&1",
+          "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka-1:9092 > /dev/null 2>&1",
         ]
       interval: 10s
       timeout: 10s
@@ -59,7 +59,7 @@ services:
   #     test:
   #       [
   #         "CMD-SHELL",
-  #         "./opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 > /dev/null 2>&1",
+  #         "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka-2:9092 > /dev/null 2>&1",
   #       ]
   #     interval: 10s
   #     timeout: 10s
@@ -92,7 +92,7 @@ services:
   #     test:
   #       [
   #         "CMD-SHELL",
-  #         "./opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 > /dev/null 2>&1",
+  #         "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka-3:9092 > /dev/null 2>&1",
   #       ]
   #     interval: 10s
   #     timeout: 10s
