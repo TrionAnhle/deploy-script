@@ -23,11 +23,7 @@ services:
     networks:
       - vps-net
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka-1:9092 > /dev/null 2>&1",
-        ]
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka-1:9092 > /dev/null 2>&1",]
       interval: 10s
       timeout: 10s
       retries: 5
