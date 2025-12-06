@@ -25,7 +25,9 @@ detect_os_family() {
   . /etc/os-release
   local os_id_like="${ID_LIKE:-}"
 
-  if echo "$ID" "$os_id_like" | grep -qi 'debian'; then
+  if echo "$ID" "$os_id_like" | grep -qi 'ubuntu'; then
+    echo "ubuntu"
+  elif echo "$ID" "$os_id_like" | grep -qi 'debian'; then
     echo "debian"
   elif echo "$ID" "$os_id_like" | grep -Eqi 'rhel|centos'; then
     echo "centos"
@@ -33,6 +35,52 @@ detect_os_family() {
     echo "unsupported"
   fi
 }
+
+setup_ubuntu() {
+  # Load thông tin OS
+  . /etc/os-release
+
+  # Chặn luôn nếu không phải Ubuntu
+  if [ "$ID" != "ubuntu" ]; then
+    echo "❌ This script is only for Ubuntu. Current ID=$ID"
+    return 1
+  fi
+
+  # Cập nhật repo & cài các gói base
+  apt-get update
+  apt-get install -y \
+    git htop ca-certificates curl gnupg lsb-release
+
+  # Tạo thư mục keyring cho docker
+  install -m 0755 -d /etc/apt/keyrings
+
+  # Tải GPG key của Docker
+  curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" -o /etc/apt/keyrings/docker.asc
+  chmod a+r /etc/apt/keyrings/docker.asc
+
+  # Lấy codename: jammy (22.04), noble (24.04), ...
+  local codename="${VERSION_CODENAME:-$(lsb_release -cs 2>/dev/null || echo noble)}"
+
+  # Thêm Docker repo
+  echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    $codename stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null
+
+  # Cập nhật lại repo sau khi thêm docker
+  apt-get update
+
+  # Cài đầy đủ Docker (CE + CLI + containerd + buildx + compose plugin)
+  apt-get install -y \
+    docker-ce docker-ce-cli containerd.io \
+    docker-buildx-plugin docker-compose-plugin
+
+  # Bật & start docker daemon
+  systemctl enable docker
+  systemctl start docker
+
+  echo "✅ Docker installed OK on Ubuntu ($codename)."
+}
+
 
 setup_debian() {
   . /etc/os-release
@@ -68,6 +116,9 @@ setup_centos() {
 main() {
   os_family=$(detect_os_family)
   case "$os_family" in
+    ubuntu)
+      setup_ubuntu
+      ;;
     debian)
       setup_debian
       ;;
